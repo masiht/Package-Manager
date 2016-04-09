@@ -1,0 +1,7 @@
+uroot: /opt/app/workload/ucomm
+proot: /opt/app/workload/ucomm/local
+htdocs: /opt/app/workload/ucomm/webserver/htdocs
+hostname: zld02600
+apache_ssl_port: 8080
+apache_port: 8081
+tomcat_port: 9080

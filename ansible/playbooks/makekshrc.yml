@@ -1,0 +1,118 @@
+- hosts: server
+  tasks:
+  - name: kshrc uroot
+    lineinfile: dest=/home/ucomm/.kshrc regexp="^export UROOT=\/opt\/app\/workload\/ucomm" line="export UROOT=/opt/app/workload/ucomm"     
+    notify:
+    - log 
+
+  - name: kshrc proot
+    lineinfile: dest=/home/ucomm/.kshrc regexp="^export PROOT=\/opt\/app\/workload\/ucomm\/local" line="export PROOT=/opt/app/workload/ucomm/local"
+    notify:
+    - log
+  - name: kshrc proot path
+    lineinfile: dest=/home/ucomm/.kshrc regexp="^PATH=.*PROOT\/bin.*" line="PATH=$PROOT/bin:$PATH"
+    notify:
+    - log
+
+  - name: cd UROOT
+    lineinfile: dest=/home/ucomm/.kshrc regexp="^cd $UROOT" line="cd $UROOT"
+    notify:
+    - log
+  
+  - name: mkdir UROOT
+    file: path={{uroot}} state=directory
+    notify:
+    - log
+  
+  - name: mkdir PROOT
+    file: path={{proot}} state=directory
+    notify:
+    - log
+  
+  - name: mkdir PROOT/src
+    file: path={{proot}}/src state=directory
+    notify:
+    - log
+  
+  - name: mkdir PROOT/repos
+    file: path={{proot}}/repos state=directory
+    notify:
+    - log
+  - name: mkdir PROOT/src/download
+    file: path={{proot}}/src/download state=directory
+    notify:
+    - log
+ 
+  - name: mkdir PROOT/src/install_scripts
+    file: path={{proot}}/src/install_scripts state=directory
+    notify:
+    - log
+  
+  - name: mkdir UROOT/data/
+    file: path={{uroot}}/data/cert state=directory
+    notify:
+    - log
+  
+  - name: mkdir UROOT/data/webphone
+    file: path={{uroot}}/data/webphone state=directory
+    notify:
+    - log
+  
+  - name: mkdir UROOT/data/cert
+    file: path={{uroot}} state=directory
+    notify:
+    - log
+  
+  - name: mkdir UROOT/data/content
+    file: path={{uroot}} state=directory
+    notify:
+    - log
+  
+  - name: mkdir UROOT/data/content_archive
+    file: path={{uroot}}/data/content_archive state=directory
+    notify:
+    - log
+  
+  - name: mkdir UROOT/data/content_pending
+    file: path={{uroot}}/data/content_pending state=directory
+    notify:
+    - log
+  
+  - name: mkdir UROOT/data/content_cleanup
+    file: path={{uroot}}/data/content_cleanup state=directory
+    notify:
+    - log
+  
+  - name: mkdir UROOT/webserver
+    file: path={{uroot}}/webserver state=directory
+    notify:
+    - log
+  
+  - name: mkdir UROOT/webserver/htdocs
+    file: path={{uroot}}/webserver/htdocs state=directory
+    notify:
+    - log
+  
+  - name: mkdir UROOT/webserver/webapps
+    file: path={{uroot}}/webserver/webapps state=directory
+    notify:
+    - log
+  
+  - name: mkdir UROOT/scripts
+    file: path={{uroot}}/scripts state=directory
+    notify:
+    - log
+  
+  - name: mkdir UROOT/log
+    file: path={{uroot}}/log state=directory
+    notify:
+    - log
+  
+  - name: mkdir UROOT/bkup
+    file: path={{uroot}}/bkup state=directory
+    notify:
+    - log
+ 
+  handlers:
+  - name: log
+    shell: echo $HOME > /tmp/id2.log

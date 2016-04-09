@@ -1,0 +1,16 @@
+- hosts: server
+  tasks:
+
+# scp install scripts
+  - name: scp install_scripts
+    copy: src=~/git/server-setup/install_scripts/install_nginx.ksh dest={{proot}}/src/install_scripts/install_nginx.ksh owner=ucomm group=ucomm mode=0644
+
+# nginx-0.1.0
+  - name: scp nginx-0.1.0.tar.gz
+    copy: src=~/git/server-setup/download/nginx-0.1.0.tar.gz dest={{proot}}/src/download owner=ucomm group=ucomm mode=0644
+
+  - name: install_nginx
+    shell:  source ~/.kshrc; ksh {{proot}}/src/install_scripts/install_nginx.ksh
+    notify:
+    - log 
+

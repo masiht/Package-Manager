@@ -1,0 +1,8 @@
+- hosts: server
+  tasks:
+
+  - name: start tomcat
+    shell:  source ~/.kshrc; sh $CATALINA_HOME/bin/startup.sh
+    notify:
+    - log 
+    

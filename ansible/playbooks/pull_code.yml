@@ -1,0 +1,5 @@
+- hosts: server
+  tasks:
+  # admin
+  - name: scp admin.war
+    copy: src=~/git/ucadminv2/target/admin.war dest={{uroot}}/webserver/webapps owner=ucomm group=ucomm mode=0644

@@ -1,0 +1,16 @@
+- hosts: server
+  tasks:
+
+# scp install scripts
+  - name: scp install_scripts
+    copy: src=~/git/server-setup/install_scripts/install_memcached.ksh dest={{proot}}/src/install_scripts/install_memcached.ksh owner=ucomm group=ucomm mode=0644
+
+# memcached-1.4.25
+  - name: scp memcached-1.4.25.tar.gz
+    copy: src=~/git/server-setup/download/memcached-1.4.25.tar.gz dest={{proot}}/src/download owner=ucomm group=ucomm mode=0644
+
+  - name: memcached-1.4.25
+    shell:  source ~/.kshrc; ksh {{proot}}/src/install_scripts/install_memcached.ksh
+    notify:
+    - log 
+

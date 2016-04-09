@@ -1,0 +1,15 @@
+- hosts: server
+  tasks:
+# scp install scripts
+  - name: scp install_scripts
+    copy: src=~/git/server-setup/install_scripts/install_curl.ksh dest={{proot}}/src/install_scripts/install_curl.ksh owner=ucomm group=ucomm mode=0644
+
+# curl-7.33.0
+  - name: scp curl-7.33.0.tar.gz
+    copy: src=~/git/server-setup/download/curl-7.33.0.tar.gz dest={{proot}}/src/download owner=ucomm group=ucomm mode=0644
+
+  - name: install_curl
+    shell:  source ~/.kshrc; ksh {{proot}}/src/install_scripts/install_curl.ksh
+    notify:
+    - log 
+

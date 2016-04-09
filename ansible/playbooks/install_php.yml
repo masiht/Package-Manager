@@ -1,0 +1,22 @@
+- hosts: server
+  tasks:
+
+# scp install scripts
+  - name: scp install_scripts
+    copy: src=~/git/server-setup/install_scripts/install_php.ksh dest={{proot}}/src/install_scripts/install_php.ksh owner=ucomm group=ucomm mode=0644
+
+# libxml2-2.9.1 
+  - name: scp libxml2-2.9.1.tar.gz
+    copy: src=~/git/server-setup/download/libxml2-2.9.1.tar.gz dest={{proot}}/src/download owner=ucomm group=ucomm mode=0644
+
+# php-5.5.6
+  - name: scp php-5.5.6.tar.gz 
+    copy: src=~/git/server-setup/download/php-5.5.6.tar.gz dest={{proot}}/src/download owner=ucomm group=ucomm mode=0644
+
+  - name: install_php
+    shell:  source ~/.kshrc; ksh {{proot}}/src/install_scripts/install_php.ksh
+    notify:
+    - log 
+
+  - name: copy config
+    template: src=~/git/server-setup/ansible/templates/php.ini.j2 dest={{proot}}/lib/php.ini

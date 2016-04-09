@@ -1,0 +1,20 @@
+- hosts: server
+  tasks:
+
+# scp install scripts
+  - name: scp install_scripts
+    copy: src=~/git/server-setup/install_scripts/install_python.ksh dest={{proot}}/src/install_scripts/install_python.ksh owner=ucomm group=ucomm mode=0644
+
+# cx_Oracle-5.2
+  - name: scp cx_Oracle-5.2.tar.gz
+    copy: src=~/git/server-setup/download/cx_Oracle-5.2.tar.gz dest={{proot}}/src/download owner=ucomm group=ucomm mode=0644  
+
+# Python2.7.tgz
+  - name: scp Python2.7.tgz
+    copy: src=~/git/server-setup/download/Python2.7.tgz dest={{proot}}/src/download owner=ucomm group=ucomm mode=0644
+
+  - name: install_python
+    shell:  source ~/.kshrc; ksh {{proot}}/src/install_scripts/install_python.ksh
+    notify:
+    - log 
+

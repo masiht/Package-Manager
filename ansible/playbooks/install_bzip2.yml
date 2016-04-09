@@ -1,0 +1,15 @@
+- hosts: server
+  tasks:
+# scp install scripts
+  - name: scp install_scripts
+    copy: src=~/git/server-setup/install_scripts/install_bzip2.ksh dest={{proot}}/src/install_scripts/install_bzip2.ksh owner=ucomm group=ucomm mode=0644
+
+  # bzip2-1.0.6.tar.gz
+  - name: scp bzip2-1.0.6.tar.gz
+    copy: src=~/git/server-setup/download/bzip2-1.0.6.tar.gz dest={{proot}}/src/download owner=ucomm group=ucomm mode=0644
+
+  - name: install_bzip2
+    shell:  source ~/.kshrc; ksh {{proot}}/src/install_scripts/install_bzip2.ksh
+    notify:
+    - log 
+

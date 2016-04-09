@@ -1,0 +1,43 @@
+- hosts: server
+  tasks:
+
+# scp install scripts
+  - name: scp install_scripts
+    copy: src=~/git/server-setup/install_scripts/install_tomcat.ksh dest={{proot}}/src/install_scripts/install_tomcat.ksh owner=ucomm group=ucomm mode=0644
+
+# jre-8u20-linux-x64
+  - name: scp jre-8u20-linux-x64.gz
+    copy: src=~/git/server-setup/download/jre-8u20-linux-x64.gz dest={{proot}}/src/download owner=ucomm group=ucomm mode=0644
+    
+  - name: kshrc java
+    lineinfile: dest=/home/ucomm/.kshrc regexp="^export JAVA_HOME=$PROOT\/src\/jre" line="export JAVA_HOME=$PROOT/src/jre"     
+    notify:
+    - log
+    
+  - name: kshrc java path
+    lineinfile: dest=/home/ucomm/.kshrc regexp="^PATH=.*JAVA_HOME\/bin.*" line="PATH=$JAVA_HOME/bin:$PATH"
+    notify:
+    - log
+
+    # apache-tomcat-8.0.26
+  - name: scp apache-tomcat-8.0.26.tar.gz
+    copy: src=~/git/server-setup/download/apache-tomcat-8.0.26.tar.gz dest={{proot}}/src/download owner=ucomm group=ucomm mode=0644
+
+  - name: install_tomcat 
+    shell:  source ~/.kshrc; ksh {{proot}}/src/install_scripts/install_tomcat.ksh
+    notify:
+    - log 
+  
+  - name: copy config
+    template: src=~/git/server-setup/ansible/templates/server.xml.j2 dest={{proot}}/src/tomcat/conf/server.xml
+
+  - name: kshrc tomcat
+    lineinfile: dest=/home/ucomm/.kshrc regexp="^export CATALINA_BASE=$PROOT\/src\/tomcat" line="export CATALINA_BASE=$PROOT/src/tomcat"     
+    notify:
+    - log
+    
+  - name: kshrc tomcat
+    lineinfile: dest=/home/ucomm/.kshrc regexp="^export CATALINA_HOME=$PROOT\/src\/tomcat" line="export CATALINA_HOME=$PROOT/src/tomcat"     
+    notify:
+    - log
+    

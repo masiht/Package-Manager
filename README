@@ -1,0 +1,16 @@
+---
+1-
+copy server-setup repository to server's to /home/ucomm
+
+2- 
+$ sudo -u ucomm -i
+
+3- 
+if it is the very first time setting up the server:
+$ cd; ksh server-setup/installer_scripts/init.ksh
+
+4-
+$ cd $PROOT; ksh $PROOT/src/install_scripts/install_all.ksh
+
+5- 
+don't forget to copy .war file into 

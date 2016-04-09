@@ -1,0 +1,41 @@
+- hosts: server
+  tasks:
+# scp install scripts
+  - name: scp install_scripts
+    copy: src=~/git/server-setup/install_scripts/install_apache.ksh dest={{proot}}/src/install_scripts/install_apache.ksh owner=ucomm group=ucomm mode=0644
+
+# httpd-2.4.7.tar.bz2
+  - name: scp httpd-2.4.7.tar.bz2
+    copy: src=~/git/server-setup/download/httpd-2.4.7.tar.bz2 dest={{proot}}/src/download owner=ucomm group=ucomm mode=0644
+
+# apr-1.5.0
+  - name: scp apr-1.5.0.tar.gz
+    copy: src=~/git/server-setup/download/apr-1.5.0.tar.gz dest={{proot}}/src/download owner=ucomm group=ucomm mode=0644
+
+# pcre-8.34
+  - name: scp pcre-8.34.tar.gz
+    copy: src=~/git/server-setup/download/pcre-8.34.tar.gz dest={{proot}}/src/download owner=ucomm group=ucomm mode=0644
+
+# apr-util-1.5.3
+  - name: scp apr-util-1.5.3.tar.gz
+    copy: src=~/git/server-setup/download/apr-util-1.5.3.tar.gz dest={{proot}}/src/download owner=ucomm group=ucomm mode=0644
+
+  - name: install_apache.ksh
+    shell:  source ~/.kshrc; ksh {{proot}}/src/install_scripts/install_apache.ksh
+    notify:
+    - log 
+
+  - name: copy config
+    template: src=~/git/server-setup/ansible/templates/httpd-ssl.conf.j2 dest={{proot}}/apache2/conf/extra/httpd-ssl.conf
+
+  
+  - name: change default port
+    lineinfile: dest={{proot}}/apache2/conf/httpd.conf regexp="^Listen "  line="Listen {{apache_port}}" 
+    notify:
+    - log 
+    
+  - name: kshrc apache
+    lineinfile: dest=/home/ucomm/.kshrc regexp="^export APACHE_HOME=$PROOT\/apache2" line="export APACHE_HOME=${PROOT}/apache2"     
+    notify:
+    - log
+    

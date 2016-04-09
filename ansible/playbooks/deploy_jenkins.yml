@@ -1,0 +1,5 @@
+- hosts: server
+  tasks:
+
+  - name: scp jenkins war
+    copy: src=~/git/server-setup/download/jenkins.war dest={{uroot}}/webserver/webapps owner=ucomm group=ucomm mode=0644

@@ -1,0 +1,22 @@
+- hosts: server
+  tasks:
+
+# scp install scripts
+  - name: scp install_scripts
+    copy: src=~/git/server-setup/install_scripts/install_oracle_client.ksh dest={{proot}}/src/install_scripts/install_oracle_client.ksh owner=ucomm group=ucomm mode=0644
+
+# instantclient
+  - name: scp instantclient-basic-linux.x64-12.1.0.1.0.zip
+    copy: src=~/git/server-setup/download/instantclient-basic-linux.x64-12.1.0.1.0.zip dest={{proot}}/src/download owner=ucomm group=ucomm mode=0644
+  
+  - name: scp instantclient-sdk-linux.x64-12.1.0.1.0.zip
+    copy: src=~/git/server-setup/download/instantclient-sdk-linux.x64-12.1.0.1.0.zip dest={{proot}}/src/download owner=ucomm group=ucomm mode=0644
+  
+  - name: scp instantclient-sqlplus-linux.x64-12.1.0.1.0.zip
+    copy: src=~/git/server-setup/download/instantclient-sqlplus-linux.x64-12.1.0.1.0.zip dest={{proot}}/src/download owner=ucomm group=ucomm mode=0644
+
+  - name: install_oracle_client 
+    shell:  source ~/.kshrc; ksh {{proot}}/src/install_scripts/install_oracle_client.ksh
+    notify:
+    - log 
+

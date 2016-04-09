@@ -1,0 +1,7 @@
+- hosts: server
+  tasks:
+  
+  - name: start apache
+    shell:  source ~/.kshrc; $APACHE_HOME/bin/apachectl start
+    notify:
+    - log 
